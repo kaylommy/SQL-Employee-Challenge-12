@@ -23,10 +23,13 @@ function start() {
         ]).then((answers) => {
             switch (answers.options) {
                 case 'view all departments':
+                    viewDepartments();
                     break;
                 case 'view all roles':
+                    viewRoles();
                     break;
                 case 'view all employees':
+                    viewEmployees();
                     break;
                 case 'add a department':
                     addDepartmentName();
@@ -38,7 +41,40 @@ function start() {
                     updateEmployeeRole();
                     break;
             }
-        })
+        });
+}
+
+function viewDepartments(){
+    db.query(`SELECT * FROM department`, (err, result) =>{
+        if(err){
+            console.error('there was an error getting all departments.')
+        }else{
+            console.table(result);
+        }
+        start();
+    })
+}
+
+function viewRoles(){
+    db.query(`SELECT * FROM role`, (err, result) => {
+        if(err){
+            console.error('there was an error getting all roles.')
+        }else{
+            console.table(result);
+        }
+        start();
+    });
+}
+
+function viewEmployees(){
+    db.query(`SELECT * FROM employee`, (err, result) => {
+        if(err){
+            console.error('there was an error getting all employees.')
+        }else{
+            console.table(result);
+        }
+        start();
+    });
 }
 
 
@@ -61,7 +97,7 @@ function addDepartmentName() {
                     console.log('Department added successfully!');
                 }
             });
-        })
+        });
 }
 
 function addEmployee() {
@@ -79,12 +115,12 @@ function addEmployee() {
             },
             {
                 type: 'input',
-                message: 'Please enter the role ID of the newly added employee',
+                message: 'Please enter the role of the newly added employee',
                 name: 'employeeRole',
             },
             {
                 type: 'input',
-                message: 'Please enter the manager ID of the new employee',
+                message: 'Please enter the manager of the new employee',
                 name: 'employeeManager',
             },
         ]).then((answers) => {
@@ -93,8 +129,8 @@ function addEmployee() {
                 last_name: employeeLast,
                 role_id: employeeRole,
                 manager_id: employeeManager
-            })
-        })
+            });
+        });
 }
 
 function updateEmployeeRole() {
@@ -123,7 +159,7 @@ function updateEmployeeRole() {
             },
             {
                 type: 'input',
-                message: 'Please enter the department ID of the role',
+                message: 'Please enter the department of the role',
                 name: 'roleDept',
             },
         ]).then((answers) => {
@@ -131,6 +167,6 @@ function updateEmployeeRole() {
                 title: answers.roleName,
                 salary: answers.roleSalary,
                 department_id: roleDept
-            })
-        })
+            });
+        });
 }
