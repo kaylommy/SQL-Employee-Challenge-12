@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-
+// creates connection from db to mysql
 const db = mysql.createConnection({
     host: 'localhost',
     port: '3306',
@@ -8,11 +8,11 @@ const db = mysql.createConnection({
     password: 'password123',
     database: 'employee_db',
 });
-
+// on connect runs the start function
 db.connect(() =>{
     start();
 })
-
+// starting menu
 function start() {
     inquirer
         .prompt([
@@ -23,6 +23,7 @@ function start() {
                 name: 'options',
             }
         ]).then((answers) => {
+            // runs function based on answer
             switch (answers.options) {
                 case 'view all departments':
                     viewDepartments();
@@ -45,7 +46,7 @@ function start() {
             }
         })
 }
-
+// view all departments
 function viewDepartments(){
     db.query(`SELECT * FROM department`, (err, result) =>{
         if(err){
@@ -56,7 +57,7 @@ function viewDepartments(){
         start();
     })
 }
-
+// view all roles
 function viewRoles(){
     db.query(`SELECT * FROM role`, (err, result) => {
         if(err){
@@ -67,7 +68,7 @@ function viewRoles(){
         start();
     })
 }
-
+// view all employees
 function viewEmployees(){
     db.query(`SELECT * FROM employee`, (err, result) => {
         if(err){
@@ -78,9 +79,7 @@ function viewEmployees(){
         start();
     })
 }
-
-
-
+// add a department
 function addDepartmentName() {
     inquirer
         .prompt([
@@ -103,7 +102,7 @@ function addDepartmentName() {
        
         })
 }
-
+// add an employee
 function addEmployee() {
     inquirer
         .prompt([
@@ -140,7 +139,7 @@ function addEmployee() {
             
         })
 }
-
+// update an employee role
 function updateEmployeeRole() {
     inquirer
         .prompt([
