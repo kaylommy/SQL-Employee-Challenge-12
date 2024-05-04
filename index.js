@@ -127,16 +127,15 @@ function addEmployee() {
                 name: 'employeeManager',
             },
         ]).then((answers) => {
-            console.log(answers)
             db.query('INSERT INTO employee SET ?', {
                 first_name: answers.employeeFirst,
                 last_name: answers.employeeLast,
                 role_id: answers.employeeRole,
                 manager_id: answers.employeeManager
             }, ()=>{
+                console.log('employee added sucessfully!');
                 start();
             });
-            
         })
 }
 // update an employee role
@@ -158,8 +157,8 @@ function updateEmployeeRole() {
                 answers.roleId,
                 answers.employeeId,
             ], ()=>{
+                console.log('updated successfully!');
                 start();
             })
-            
         });
 }
