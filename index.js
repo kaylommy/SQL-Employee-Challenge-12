@@ -3,13 +3,15 @@ const mysql = require('mysql2');
 
 const db = mysql.createConnection({
     host: 'localhost',
-    port: '3001',
+    port: '3306',
     user: 'root',
-    password: '',
+    password: 'password123',
     database: 'employee_db',
 });
 
-start();
+db.connect(() =>{
+    start();
+})
 
 function start() {
     inquirer
@@ -41,7 +43,7 @@ function start() {
                     updateEmployeeRole();
                     break;
             }
-        });
+        })
 }
 
 function viewDepartments(){
@@ -63,7 +65,7 @@ function viewRoles(){
             console.table(result);
         }
         start();
-    });
+    })
 }
 
 function viewEmployees(){
@@ -74,7 +76,7 @@ function viewEmployees(){
             console.table(result);
         }
         start();
-    });
+    })
 }
 
 
@@ -96,8 +98,10 @@ function addDepartmentName() {
                 } else {
                     console.log('Department added successfully!');
                 }
+                start();
             });
-        });
+       
+        })
 }
 
 function addEmployee() {
@@ -124,49 +128,39 @@ function addEmployee() {
                 name: 'employeeManager',
             },
         ]).then((answers) => {
+            console.log(answers)
             db.query('INSERT INTO employee SET ?', {
                 first_name: answers.employeeFirst,
-                last_name: employeeLast,
-                role_id: employeeRole,
-                manager_id: employeeManager
+                last_name: answers.employeeLast,
+                role_id: answers.employeeRole,
+                manager_id: answers.employeeManager
+            }, ()=>{
+                start();
             });
-        });
+            
+        })
 }
 
 function updateEmployeeRole() {
     inquirer
         .prompt([
             {
-                type: 'list',
-                message: 'Please select the employee whose role you would like to update:',
-                choices: '',
-                name: 'employeeList',
+                type: 'input',
+                message: 'Please input the employees id that would like to update',
+                name: 'employeeId',
             },
             {
                 type: 'input',
                 message: 'Please enter the updated role below:',
-                name: 'updatedEmployee',
-            },
-            {
-                type: 'input',
-                message: 'Please enter the name of the role',
-                name: 'roleName',
-            },
-            {
-                type: 'input',
-                message: 'Please enter the salary of the role',
-                name: 'roleSalary',
-            },
-            {
-                type: 'input',
-                message: 'Please enter the department of the role',
-                name: 'roleDept',
+                name: 'roleId',
             },
         ]).then((answers) => {
-            db.query("UPDATE employee SET ?", {
-                title: answers.roleName,
-                salary: answers.roleSalary,
-                department_id: roleDept
-            });
+            db.query("UPDATE employee SET role_id = ? WHERE id = ?", [
+                answers.roleId,
+                answers.employeeId,
+            ], ()=>{
+                start();
+            })
+            
         });
 }
