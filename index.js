@@ -19,7 +19,7 @@ function start() {
             {
                 type: 'list',
                 message: 'Please select an option below:',
-                choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add an employee', 'update an employee role'],
+                choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add an employee', 'add a role', 'update an employee role'],
                 name: 'options',
             }
         ]).then((answers) => {
@@ -39,6 +39,9 @@ function start() {
                     break;
                 case 'add an employee':
                     addEmployee();
+                    break;
+                case 'add a role':
+                    addRole();
                     break;
                 case 'update an employee role':
                     updateEmployeeRole();
@@ -132,11 +135,50 @@ function addEmployee() {
                 last_name: answers.employeeLast,
                 role_id: answers.employeeRole,
                 manager_id: answers.employeeManager
-            }, ()=>{
-                console.log('employee added sucessfully!');
+            }, (err, results)=>{
+                if(err) {
+                    console.error('Error adding employee', err)
+                }else {
+                    console.log('employee added sucessfully!');
+                }
                 start();
             });
         })
+}
+// add a role
+function addRole() {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            message: 'what is the title of the role?',
+            name: 'roleName',
+        },
+        {
+            type: 'input',
+            message: 'What is the salary of this role?',
+            name: 'roleSalary',
+        },
+        {
+            type: 'input',
+            message: 'What is the department id for this role?',
+            name: 'departmentId',
+        }
+    ]).then((answers) => {
+        db.query('INSERT INTO role SET ?', {
+            title: answers.roleName,
+            salary: answers.roleSalary,
+            department_id: answers.departmentId,
+        }, (err, results) => {
+            if(err){
+                console.error('Error adding role', err);
+            }else {
+            console.log('Role added successfully!');
+            }
+            start();
+        })
+    })
+   
 }
 // update an employee role
 function updateEmployeeRole() {
@@ -156,8 +198,12 @@ function updateEmployeeRole() {
             db.query("UPDATE employee SET role_id = ? WHERE id = ?", [
                 answers.roleId,
                 answers.employeeId,
-            ], ()=>{
-                console.log('updated successfully!');
+            ], (err, results)=>{
+                if(err){
+                    console.error('Error updating employee')
+                }else {
+                    console.log('updated successfully!');
+                }
                 start();
             })
         });
