@@ -53,7 +53,7 @@ function start() {
 function viewDepartments(){
     db.query(`SELECT * FROM department`, (err, result) =>{
         if(err){
-            console.error('there was an error getting all departments.')
+            console.error('there was an error getting all departments.', err)
         }else{
             console.table(result);
         }
@@ -64,7 +64,7 @@ function viewDepartments(){
 function viewRoles(){
     db.query(`SELECT * FROM role`, (err, result) => {
         if(err){
-            console.error('there was an error getting all roles.')
+            console.error('there was an error getting all roles.', err)
         }else{
             console.table(result);
         }
@@ -75,7 +75,7 @@ function viewRoles(){
 function viewEmployees(){
     db.query(`SELECT * FROM employee`, (err, result) => {
         if(err){
-            console.error('there was an error getting all employees.')
+            console.error('there was an error getting all employees.', err)
         }else{
             console.table(result);
         }
