@@ -9,7 +9,7 @@
   This is an employee tracker made with mysql and inquirer. The user is presented with multiple prompts to decide what the user would like to do. The user can update employee roles, add employees, add roles, and view all current roles, employees, and departments.
 
   ## Video Link
-  https://drive.google.com/file/d/1VUMeaIvE-7Ug5rqh1jkGMB13OD7G86Cq/view?usp=sharing
+  https://drive.google.com/file/d/1wE7NbLQC5Y6IOoA_mM74Qusfg6uv3aXt/view?usp=sharing
 
   ## Screenshot
   ![Employee-Tracker](assets/images/Employee-Tracker.jpg "inquirer question and mysql table")
